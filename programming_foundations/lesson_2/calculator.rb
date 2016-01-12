@@ -1,12 +1,23 @@
 # calculator.rb
 # command line calculator
 
+require 'yaml'
+MESSAGES = YAML.load_file('calculator_messages.yml')
+
 def prompt(message)
   puts "=> #{message}"
 end
 
-def valid_number?(num)
-  num.to_i() != 0
+def integer?(input)
+  input.to_i.to_s == input
+end
+
+def float?(input)
+  input.to_f.to_s == input
+end
+
+def number?(input)
+  integer?(input) || float?(input)
 end
 
 def operation_to_message(op)
@@ -27,46 +38,46 @@ num2 = ''
 name = ''
 operator = ''
 
-prompt("Command Line Calculator")
-prompt("Enter your name:")
+prompt(MESSAGES["title"])
+prompt(MESSAGES["name"])
 
 loop do
   name = gets.chomp
 
   if name.empty?()
-    prompt("Not a valid name.")
+    prompt(MESSAGES["invalid_name"])
   else
     break
   end
 end
 
-prompt("Hi, #{name}!")
+prompt("Hi, #{name}.")
 
 loop do # main loop
   loop do
-    prompt("Enter first number: ")
+    prompt(MESSAGES["first_number"])
     num1 = gets.chomp
 
-    if valid_number?(num1)
+    if number?(num1)
       break
     else
-      prompt("That's not a valid number...")
+      prompt(MESSAGES["invalid_number"])
     end
   end
 
   loop do
-    prompt("Enter second number: ")
+    prompt(MESSAGES["second_number"])
     num2 = gets.chomp
 
-    if valid_number?(num2)
+    if number?(num2)
       break
     else
-      prompt("That's not a valid number...")
+      prompt(MESSAGES["invalid_number"])
     end
   end
 
-  prompt("'add', 'subtract', 'divide', 'multiply'")
-  prompt("Which operation would you like to perform?")
+  prompt(MESSAGES["operator"])
+  prompt(MESSAGES["which_operator"])
 
   loop do
     operator = gets.chomp.downcase()
@@ -74,11 +85,11 @@ loop do # main loop
     if %w(add subtract divide multiply).include?(operator)
       break
     else
-      prompt("Must choose add, subtract, divide, or multiply")
+      prompt(MESSAGES["operator"])
     end
   end
 
-  prompt("#{operation_to_message(operator)} the two numbers...")
+  prompt("#{operation_to_message(operator)}" + MESSAGES["calculating"])
 
   result = case operator
            when 'add'
@@ -91,9 +102,9 @@ loop do # main loop
              num1.to_i * num2.to_i
            end
 
-  prompt("The total is: #{result}")
+  prompt(MESSAGES["total"] + "#{result}")
 
-  prompt("Do you want to perform another calculation?(Y to calculate again)")
+  prompt(MESSAGES["another"])
   answer = gets.chomp
   break unless answer.downcase().start_with?('y')
 end
