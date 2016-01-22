@@ -124,9 +124,12 @@ def win_count(winner, score)
 end
 
 def display_score(score)
+  prompt "------------------------------------"
   prompt "First to a score of 5, wins."
+  prompt "------------------------------------"
   prompt "Score: Player - #{score['Player']}, " +
          "Computer - #{score['Computer']}"
+  prompt "------------------------------------"
 end
 
 def find_at_risk_space(line, board, marker)
@@ -137,20 +140,52 @@ def find_at_risk_space(line, board, marker)
   end
 end
 
-score = {'Player' => 0, 'Computer' => 0}
+def choose_first_player
+  prompt "Choose who will play first.('c' for Computer or 'p' for Player)"
+  loop do
+    player = gets.chomp
+    if player.downcase.start_with?('c')
+      return 'Computer'
+    elsif player.downcase.start_with?('p')
+      return 'Player'
+    else
+      prompt "Invalid choice."
+    end
+  end
+end
 
+def alternate_player(current_player)
+  if current_player == 'Player'
+    return 'Computer'
+  else
+    return 'Player'
+  end
+end
+
+def place_piece!(board, current_player)
+  if current_player == 'Player'
+    player_move!(board)
+  else
+    computer_move!(board)
+  end
+end
+
+system 'clear'
+prompt 'Welcome to Tic-Tac-Toe.'
+
+score = {'Player' => 0, 'Computer' => 0}
 display_score(score)
 
 loop do # main loop
+  current_player = choose_first_player
+  
   board = initialize_board
 
-  loop do # loop turns until game is over
+  loop do # turns loop
     display_board(board)
-    player_move!(board)
-    break if board_full?(board) || game_won?(board)
-
-    computer_move!(board)
-    break if board_full?(board) || game_won?(board)
+    place_piece!(board, current_player)
+    current_player = alternate_player(current_player)
+    break if game_won?(board) || board_full?(board)
   end
 
   display_board(board)
