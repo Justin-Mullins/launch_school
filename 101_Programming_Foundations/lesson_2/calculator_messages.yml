@@ -1,0 +1,15 @@
+# calculator_messages.yml
+
+title: "Command Line Calculator"
+name: "Enter your Name: "
+invalid_name: "Enter a valid name."
+first_number: "Enter first number: "
+second_number: "Enter second number: "
+invalid_number: "Not a valid number."
+operator: "You must choose to 'add', 'subtract', 'divide', 'multiply'"
+which_operator: "Which operation would you like to perform?"
+calculating: " the two numbers..."
+total: "The total is: "
+another: "Do you want to perform another calculation?(Y to calculate again)"
+
+# end
