@@ -1,3 +1,9 @@
+# rock_paper_scissors_computer_personalities.rb
+# ===============================================
+# Code different moves for the different computer personalities.
+# For example, R2D2 chooses rock more often than other moves.
+
+
 class Move
   VALUES = ['rock', 'paper', 'scissors']
 
@@ -69,13 +75,35 @@ class Human < Player
 end
 
 class Computer < Player
-  def choose
-    self.move = Move.new(Move::VALUES.sample)
-  end
-
   def set_name
     self.name = ['R2D2', 'Hal', 'Chappie', 'Sonny', 'Number 5'].sample
   end
+
+  def choose
+    if self.name ==  'R2D2'
+      choice = move_ratio(10, 4, 6).sample
+    elsif self.name == 'Hal'
+      choice = move_ratio(3, 5, 8).sample
+    elsif self.name == 'Chappie'
+      choice = move_ratio(7, 4, 5).sample
+    elsif self.name == 'Sonny'
+      choice = move_ratio(8, 6, 7).sample
+    elsif self.name == 'Number 5'
+      choice = move_ratio(7, 3, 4).sample
+    end
+    self.move = Move.new(choice)
+    # self.move = Move.new(Move::VALUES.sample)
+  end
+
+  # move_ratio takes in the different ratios of rock, paper, and scissors's likelihood
+  # of being chosen, and returns an array with the possible choices. 
+  def move_ratio(rock_ratio, paper_ratio, scissors_ratio)
+    ratio = []
+    ratio.fill('rock', ratio.size, rock_ratio)
+    ratio.fill('paper', ratio.size, paper_ratio)
+    ratio.fill('scissors', ratio.size, scissors_ratio)
+  end
+
 end
 
 # Game Orchestration Engine

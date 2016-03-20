@@ -1,5 +1,9 @@
+# rock_paper_scissors_lizard_spock.rb
+# ===================================
+# Adding lizard and spock to the rock paper scissors game.
+
 class Move
-  VALUES = ['rock', 'paper', 'scissors']
+  VALUES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
 
   def initialize(value)
     @value = value
@@ -17,16 +21,38 @@ class Move
     @value == 'paper'
   end
 
+  def lizard?
+    @value == 'lizard'
+  end
+
+  def spock?
+    @value == 'spock'
+  end
+
   def >(other_move)
-    (rock? && other_move.scissors?) ||
-      (paper? && other_move.rock?) ||
-      (scissors? && other_move.paper?)
+    # rock beats scissors and lizard
+    (rock? && (other_move.scissors? || other_move.lizard?)) ||
+      # paper beats rock and spock
+      (paper? && (other_move.rock? || other_move.spock?)) ||
+      # scissors beats paper and lizard
+      (scissors? && (other_move.paper? || other_move.lizard?)) ||
+      # lizard beats paper and spock
+      (lizard? && (other_move.paper? || other_move.spock?)) ||
+      # spock beats rock and scissors
+      (spock? && (other_move.rock? || other_move.scissors?)) 
   end
 
   def <(other_move)
-    (rock? && other_move.paper?) ||
-      (paper? && other_move.scissors?) ||
-      (scissors? && other_move.rock?)
+    # rock loses to paper and spock
+    (rock? && (other_move.paper? || other_move.spock?)) ||
+      # paper loses to scissors and lizard
+      (paper? && (other_move.scissors? || other_move.lizard?)) ||
+      # scissors loses to rock and spock
+      (scissors? && (other_move.rock? || other_move.spock?)) ||
+      # lizard loses to rock and scissors
+      (lizard? && (other_move.rock? || other_move.scissors?)) ||
+      # spock loses to paper and lizard
+      (spock? && (other_move.paper? || other_move.lizard?))
   end
 
   def to_s
@@ -48,7 +74,7 @@ class Human < Player
     # Human chooses move
     choice = nil
     loop do
-      puts "Please choose rock, paper, or scissors:"
+      puts "Please choose rock, paper, scissors, lizard, or spock:"
       choice = gets.chomp
       break if Move::VALUES.include? choice
       puts "Sorry, invalid choice."
@@ -88,11 +114,11 @@ class RPSGame
   end
 
   def display_welcome_message
-    puts "Welcome to Rock, Paper, Scissors!"
+    puts "Welcome to Rock, Paper, Scissors, Lizard, Spock!"
   end
 
   def display_goodbye_message
-    puts "Thanks for playing Rock, Paper, Scissors!"
+    puts "Thanks for playing Rock, Paper, Scissors, Lizard, Spock!"
     puts "Good bye."
   end
 

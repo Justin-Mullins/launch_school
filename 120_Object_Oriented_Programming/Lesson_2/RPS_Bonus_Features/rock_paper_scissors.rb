@@ -1,3 +1,6 @@
+# rock_paper_scissors.rb
+# ==========================
+
 class Move
   VALUES = ['rock', 'paper', 'scissors']
 

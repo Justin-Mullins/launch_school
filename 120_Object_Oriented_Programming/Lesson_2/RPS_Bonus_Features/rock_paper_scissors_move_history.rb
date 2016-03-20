@@ -1,3 +1,7 @@
+# rock_paper_scissors_move_history.rb
+# ======================================
+# come up with some rules for the computer to move based on the player's moves.
+
 class Move
   VALUES = ['rock', 'paper', 'scissors']
 
@@ -69,8 +73,25 @@ class Human < Player
 end
 
 class Computer < Player
-  def choose
-    self.move = Move.new(Move::VALUES.sample)
+  # Computer.choose will look at previous player moves and make choice based on that info.
+  def choose(player_move_history) # pass in player_move_history
+    move_counts = Hash.new 0 # this will store how many times each move was chosen by the player.
+    player_move_history.each do |move| # loop through all moves
+      move_counts[move] += 1
+    end
+    # compare the values to see if one move is chosen more than 
+    # often than others.
+    # If so, then computer will choose the movn
+    e to block that.
+    if move_counts['rock'] > move_counts['paper'] && move_counts['rock'] > move_counts['scissors']
+      self.move = Move.new('paper')
+    elsif move_counts['paper'] > move_counts['rock'] && move_counts['paper'] > move_counts['scissors']
+      self.move = Move.new('scissors')
+    elsif move_counts['scissors'] > move_counts['rock'] && move_counts['scissors'] > move_counts['paper']
+      self.move = Move.new('rock')
+    else  # Else, choose move at random.
+      self.move = Move.new(Move::VALUES.sample) # choose move at random
+    end
   end
 
   def set_name
@@ -80,11 +101,12 @@ end
 
 # Game Orchestration Engine
 class RPSGame
-  attr_accessor :human, :computer
+  attr_accessor :human, :computer, :player_move_history
 
   def initialize
     @human = Human.new
     @computer = Computer.new
+    @player_move_history = []
   end
 
   def display_welcome_message
@@ -99,6 +121,11 @@ class RPSGame
   def display_moves
     puts "#{human.name} chose #{human.move}."
     puts "#{computer.name} chose #{computer.move}."
+  end
+
+  # Store player_move_history for reference in Computer.choose 
+  def store_moves
+    player_move_history << human.move.to_s  # player moves are stored as strings in an array
   end
 
   def display_winner
@@ -129,8 +156,9 @@ class RPSGame
 
     loop do
       human.choose
-      computer.choose
+      computer.choose(player_move_history)
       display_moves
+      store_moves
       display_winner
       break unless play_again?
     end

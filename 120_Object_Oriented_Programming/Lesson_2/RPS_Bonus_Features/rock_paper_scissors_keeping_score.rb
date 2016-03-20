@@ -1,6 +1,25 @@
+# rock_paper_scissors:_keeping_score.rb
+# ======================================
+# Add functionality to program to keep score.
+# First to 10 points wins.
+# Should score be a new class or a state of an existing class?
+
+# ============================================================
+# Through testing out a couple of different ways, I found
+# that adding a score instance variable to the Player class
+# was the easiest way to implement a running scrore for each player.
+
+# I could have also made a score class with a display and update methods
+# but I felt like I wasn't doing enough with the score to make it worthwhile
+# to make it a new class.
+
+# It made sense to make Move it's own class because it helped consolidate and
+# organize some critical code, but code related to the score is very simple
+# and only a few lines.
+
 class Move
   VALUES = ['rock', 'paper', 'scissors']
-
+ 
   def initialize(value)
     @value = value
   end
@@ -35,10 +54,11 @@ class Move
 end
 
 class Player
-  attr_accessor :move, :name
+  attr_accessor :move, :name, :score
 
   def initialize
     @move = nil
+    @score = 0
     set_name
   end
 end
@@ -89,6 +109,7 @@ class RPSGame
 
   def display_welcome_message
     puts "Welcome to Rock, Paper, Scissors!"
+    puts "First to 10 points wins!"
   end
 
   def display_goodbye_message
@@ -103,11 +124,19 @@ class RPSGame
 
   def display_winner
     if human.move > computer.move
-      puts "#{human.name} won!"
+      puts "#{human.name} score's a point!"
     elsif human.move < computer.move
-      puts "#{computer.name} won!"
+      puts "#{computer.name} score's a point!"
     else
       puts "It's a tie!"
+    end
+  end
+
+  def display_overall_winner
+    if human.score == 10
+      puts "#{human.name} wins the game!" 
+    elsif computer.score == 10
+      puts "#{computer.name} wins the game!"
     end
   end
 
@@ -124,6 +153,18 @@ class RPSGame
     return false if answer == 'n'
   end
 
+  def update_score
+    if human.move > computer.move
+      human.score += 1
+    elsif human.move < computer.move
+      computer.score += 1
+    end
+  end
+
+  def display_score
+    puts "Score: #{human.name} - #{human.score}   #{computer.name} - #{computer.score}"
+  end
+
   def play
     display_welcome_message
 
@@ -132,8 +173,11 @@ class RPSGame
       computer.choose
       display_moves
       display_winner
-      break unless play_again?
+      update_score
+      display_score
+      break unless human.score < 10 && computer.score < 10 && play_again?
     end
+    display_overall_winner
     display_goodbye_message
   end
 end
