@@ -79,7 +79,7 @@ class Computer < Player
     player_move_history.each do |move| # loop through all moves
       move_counts[move] += 1
     end
-    # compare the values to see if one move is chosen more than 
+    # compare the values to see if one move is chosen more than
     # often than others.
     # If so, then computer will choose the movn
     e to block that.
