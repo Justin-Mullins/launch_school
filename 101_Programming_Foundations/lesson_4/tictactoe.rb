@@ -18,8 +18,7 @@ def joinor(array, separator=', ', final_separator='or')
   if array.length <= 1
     return array.join
   elsif array.length > 2
-    string = array.first(array.length - 2).join("#{separator}") +
-             "#{separator}"
+    string = array.first(array.length - 2).join("#{separator}") + "#{separator}"
   end  
   string += array.last(2).join(" #{final_separator} ")
 end

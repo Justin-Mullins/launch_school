@@ -1,0 +1,21 @@
+Preparing to Code Memory Game:
+
+We'll take an object-oriented approach to designing the solution, so we'll employ the steps we learned earlier:
+
+1. Write a description of the problem and extract major nouns and verbs.
+
+Memory is a board game where players play on a grid. Each player takes turns selecting 2 face down cards which get flipped over and they are trying to get a match.
+
+Nouns: board, player, grid
+Verbs: play, select, match, flip
+
+2. Make an initial guess at organizing the verbs into nouns and do a spike to explore the problem with temporary code.
+
+Board
+Square
+Player
+- flip
+- play
+- match
+
+3. Optional - when you have a better idea of the problem, model your thoughts into CRC cards.
