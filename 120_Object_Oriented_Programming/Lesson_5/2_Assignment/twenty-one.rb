@@ -21,22 +21,9 @@ class Participant
   end
 
   def total_hand_value
-    # I needed to get the all of the aces to the end of the array to easily
-    # count their values. This block of code below is a sloppy attempt at
-    # that.
-
-    # temp_hand = hand_values.dup # create dup of hand_values
-    # num_of_aces = hand_values.count('Ace')
-    # if temp_hand.include?('Ace') # if hand includes 'Ace'
-    #   num_of_aces = temp_hand.count('Ace') # store num_of_aces
-    #   temp_hand.delete('Ace') # delete all 'Ace's from hand
-    #   num_of_aces.times { temp_hand.push('Ace') } # add num of aces to end of hand
-    # end
-
     total = 0
     num_of_aces = hand_values.count('Ace')
-    # OK, now that I have all of the Aces at the end of the array,
-    # it's easy to total.
+    
     hand_values.each do |card| # go though each card in hand
       card_value = card
       card_value = 10 if card == 'Jack' || card == 'Queen' || card == 'King'
