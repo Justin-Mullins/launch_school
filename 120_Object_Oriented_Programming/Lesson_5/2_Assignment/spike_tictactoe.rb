@@ -8,7 +8,7 @@ class Board
 
   def initialize
     @squares = {}
-    (1..9).each {|key| @squares[key] = Square.new(Square::INITIAL_MARKER)}
+    (1..9).each { |key| @squares[key] = Square.new(Square::INITIAL_MARKER) }
   end
 
   def get_square_at(key)
@@ -20,7 +20,7 @@ class Board
   end
 
   def unmarked_keys
-    @squares.keys.select {|key| @squares[key].unmarked? }
+    @squares.keys.select { |key| @squares[key].unmarked? }
   end
 
   def full?
@@ -52,7 +52,7 @@ class Board
   end
 
   def reset
-    (1..9).each {|key| @squares[key] = Square.new(Square::INITIAL_MARKER)}
+    (1..9).each { |key| @squares[key] = Square.new(Square::INITIAL_MARKER) }
   end
 end
 
@@ -70,7 +70,7 @@ class Square
   end
 
   def unmarked?
-    marker == INITIAL_MARKER 
+    marker == INITIAL_MARKER
   end
 end
 
@@ -106,19 +106,21 @@ class TTTGame
     puts "Thanks for playing!"
   end
 
+  def draw_middle_of_board
+    puts "     |     |     "
+    puts "-----+-----+-----"
+    puts "     |     |     "
+  end
+
   def display_board(options = { clear_screen: true })
     self.clear_screen if options[:clear_screen]
     puts "You're #{human.marker}'s. Computer is #{computer.marker}'s."
     puts ""
     puts "     |     |     "
     puts "  #{board.get_square_at(1)}  |  #{board.get_square_at(2)}  |  #{board.get_square_at(3)}  "
-    puts "     |     |     "
-    puts "-----------------"
-    puts "     |     |     "
+    draw_middle_of_board
     puts "  #{board.get_square_at(4)}  |  #{board.get_square_at(5)}  |  #{board.get_square_at(6)}  "
-    puts "     |     |     "
-    puts "-----------------"
-    puts "     |     |     "
+    draw_middle_of_board
     puts "  #{board.get_square_at(7)}  |  #{board.get_square_at(8)}  |  #{board.get_square_at(9)}  "
     puts "     |     |     "
   end
@@ -129,7 +131,7 @@ class TTTGame
       return array.join
     elsif array.length > 2
       string = array.first(array.length - 2).join("#{separator}") + "#{separator}"
-    end  
+    end
     string += array.last(2).join(" #{final_separator} ")
   end
 
@@ -151,7 +153,7 @@ class TTTGame
 
   def display_result
     display_board
-    
+
     case board.detect_winner
     when human.marker
       puts "You won!"

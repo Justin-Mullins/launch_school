@@ -1,7 +1,5 @@
 # tictactoe.rb
 
-require 'pry'
-
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
 INITIAL_MARKER = ' '
@@ -91,7 +89,7 @@ def computer_move!(brd)
   end
 
   # random space
-  if !space # if space is not nil
+  if !space # if space is nil
     space = blank_spaces(brd).sample
   end
   
