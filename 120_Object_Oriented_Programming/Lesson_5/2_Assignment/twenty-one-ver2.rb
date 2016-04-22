@@ -213,8 +213,13 @@ class Game
     puts ""
   end
 
+  def welcome_message
+    "Hello, Welcome to Blackjack!"
+    sleep(1.5)
+  end
+
   def start
-    # what's the sequence of steps to execute the game play?
+    welcome_message
     deck.shuffle
     deal_initial_cards
     display_initial_cards

@@ -21,30 +21,31 @@ class Participant
   end
 
   def total_hand_value
-    total = 0
     # I needed to get the all of the aces to the end of the array to easily
     # count their values. This block of code below is a sloppy attempt at
-    # that. 
-    temp_hand = hand_values.dup # create dup of hand_values
-    if temp_hand.include?('Ace') # if hand includes 'Ace'
-      num_of_aces = temp_hand.count('Ace') # store num_of_aces
-      temp_hand.delete('Ace') # delete all 'Ace's from hand
-      num_of_aces.times { temp_hand.push('Ace') } # add num of aces to end of hand
-    end
+    # that.
 
+    # temp_hand = hand_values.dup # create dup of hand_values
+    # num_of_aces = hand_values.count('Ace')
+    # if temp_hand.include?('Ace') # if hand includes 'Ace'
+    #   num_of_aces = temp_hand.count('Ace') # store num_of_aces
+    #   temp_hand.delete('Ace') # delete all 'Ace's from hand
+    #   num_of_aces.times { temp_hand.push('Ace') } # add num of aces to end of hand
+    # end
+
+    total = 0
+    num_of_aces = hand_values.count('Ace')
     # OK, now that I have all of the Aces at the end of the array,
     # it's easy to total.
-    temp_hand.each do |card| # go though each card in hand
+    hand_values.each do |card| # go though each card in hand
       card_value = card
       card_value = 10 if card == 'Jack' || card == 'Queen' || card == 'King'
-      if card == 'Ace'
-        if (total + 11) > 21
-          card_value = 1
-        else
-          card_value = 11
-        end
-      end
+      card_value = 11 if card == 'Ace'
       total += card_value
+      if total > 21 && num_of_aces > 0
+        total -= 10
+        num_of_aces -= 1
+      end
     end
     return total
   end
@@ -55,18 +56,6 @@ class Player < Participant
     super
     #  what would the "data" or "states" of a Player object entail?
     # maybe cards? a name?
-  end
-
-  def hit
-  
-  end
-
-  def stay
-
-  end
-
-  def total
-    # definitely looks like we need to know about "cards" to produce some total
   end
 end
 
@@ -135,6 +124,7 @@ class Game
 
   def display_initial_cards
     system "clear"
+    puts "Welcome to Twenty-One!"
     puts ""
     puts "Player:"
     # add starting cards' values to hand_values
@@ -152,6 +142,7 @@ class Game
 
   def display_cards
     system "clear"
+    puts "Twenty-One"
     puts ""
     puts "Player:"
     player.display_hand
@@ -209,7 +200,6 @@ class Game
   end
 
   def start
-    # what's the sequence of steps to execute the game play?
     deck.shuffle
     deal_initial_cards
     display_initial_cards
