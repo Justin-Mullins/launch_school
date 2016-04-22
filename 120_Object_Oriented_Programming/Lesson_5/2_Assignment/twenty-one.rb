@@ -1,18 +1,14 @@
 # twenty-one.rb
 require 'pry'
 
-class Participant
-  # :hand is the Card objects in hand
-  # :hand_values are the actual values of the cards
-  attr_accessor :hand, :hand_values
-
-  def initialize
-    @hand = []
-    @hand_values = []
-  end
-
+module Hand
   def display_hand
-    puts hand_values.join(',')
+    puts "---- #{name}'s Hand ----"
+    hand_values.each do |card|
+      puts "=> #{card}"
+    end
+    puts "=> Total: #{total_hand_value}"
+    puts ""
   end
 
   def busted?
@@ -23,45 +19,60 @@ class Participant
   def total_hand_value
     total = 0
     num_of_aces = hand_values.count('Ace')
-    
+
     hand_values.each do |card| # go though each card in hand
-      card_value = card
-      card_value = 10 if card == 'Jack' || card == 'Queen' || card == 'King'
-      card_value = 11 if card == 'Ace'
-      total += card_value
+      if card == 'Jack' || card == 'Queen' || card == 'King'
+        total += 10
+      elsif card == 'Ace'
+        total += 11
+      else
+        total += card
+      end
+      # Correct values for Aces
       if total > 21 && num_of_aces > 0
-        total -= 10
         num_of_aces -= 1
+        total -= 10
       end
     end
     return total
   end
+
+  def add_card(new_card)
+    cards << new_card
+  end
+end
+
+class Participant
+  include Hand
+
+  attr_accessor :name, :hand, :hand_values
+  def initialize
+    @hand = []
+    @hand_values = []
+    set_name
+  end
+
+  def set_hand_values
+    hand.each { |card| hand_values << card.value }
+  end
 end
 
 class Player < Participant
-  def initialize
-    super
-    #  what would the "data" or "states" of a Player object entail?
-    # maybe cards? a name?
+  def set_name
+    name = ''
+    loop do
+      puts "What is your name?"
+      name = gets.chomp
+      break unless name.empty?
+      puts "Sorry, you must enter a name."
+    end
+    self.name = name
   end
 end
 
 class Dealer < Participant
-  def initialize
-    super
-  end
-
-  def hit
-  end
-
-  def stay
-  end
-
-  def total
-  end
-
-  def display_hand
-    puts hand_values.join(',')
+  def set_name
+    self.name = 'Computer'
   end
 end
 
@@ -75,6 +86,8 @@ class Deck
     SUITS.each do |suit|
       VALUES.each { |value| @cards << Card.new(value, suit) } # generate deck of Card objects
     end
+
+    shuffle
   end
 
   def deal(num_of_cards)
@@ -113,17 +126,11 @@ class Game
     system "clear"
     puts "Welcome to Twenty-One!"
     puts ""
-    puts "Player:"
-    # add starting cards' values to hand_values
-    player.hand.each { |card| player.hand_values << card.value }
+    player.set_hand_values
     player.display_hand
-    puts "total: #{player.total_hand_value}"
-    puts ""
-    puts "Dealer:"
     # add starting cards' values to hand_values
     dealer.hand.each { |card| dealer.hand_values << card.value }
     dealer.display_hand
-    puts "total: #{dealer.total_hand_value}"
     puts ""
   end
 
@@ -131,14 +138,8 @@ class Game
     system "clear"
     puts "Twenty-One"
     puts ""
-    puts "Player:"
     player.display_hand
-    puts "total: #{player.total_hand_value}"
-    puts ""
-    puts "Dealer:"
     dealer.display_hand
-    puts "total: #{dealer.total_hand_value}"
-    puts ""
   end
 
   def hit_or_stay?
@@ -187,7 +188,6 @@ class Game
   end
 
   def start
-    deck.shuffle
     deal_initial_cards
     display_initial_cards
     player_turn
