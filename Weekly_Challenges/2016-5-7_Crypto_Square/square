@@ -1,0 +1,25 @@
+
+[1mFrom:[0m /home/warp/launch_school/Weekly_Challenges/2016-5-7_Crypto_Square/crypto_square.rb @ line 38 Crypto#ciphertext:
+
+    [1;34m27[0m: [32mdef[0m [1;34mciphertext[0m
+    [1;34m28[0m:   normal = normalize_plaintext
+    [1;34m29[0m:   square = []
+    [1;34m30[0m:   cipher = [31m[1;31m'[0m[31m[1;31m'[0m[31m[0m
+    [1;34m31[0m: 
+    [1;34m32[0m:   [32mwhile[0m normal != [31m[1;31m'[0m[31m[1;31m'[0m[31m[0m
+    [1;34m33[0m:     square << normal.slice!([1;34m0[0m, size).split([31m[1;31m'[0m[31m[1;31m'[0m[31m[0m)
+    [1;34m34[0m:   [32mend[0m
+    [1;34m35[0m: 
+    [1;34m36[0m:   square.size.times [32mdo[0m |column|
+    [1;34m37[0m:     line = [31m[1;31m'[0m[31m[1;31m'[0m[31m[0m
+ => [1;34m38[0m:     binding.pry
+    [1;34m39[0m:     square[column - [1;34m1[0m].size [32mdo[0m |row|
+    [1;34m40[0m:       line << square[column - [1;34m1[0m].shift
+    [1;34m41[0m:       binding.pry
+    [1;34m42[0m:     [32mend[0m
+    [1;34m43[0m:     cipher << line
+    [1;34m44[0m:     cipher << [31m[1;31m'[0m[31m [1;31m'[0m[31m[0m [32mif[0m column != square.size
+    [1;34m45[0m:   [32mend[0m
+    [1;34m46[0m:   cipher
+    [1;34m47[0m: [32mend[0m
+
