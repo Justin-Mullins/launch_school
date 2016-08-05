@@ -20,14 +20,20 @@
 
       <div id="menu">
           <div class="pure-menu">
-            <a class="pure-menu-heading" href="/">Table of Contents</a>
-            <ul class="pure-menu-list">
-              <% @contents.each do |chapter| %>
+              <a class="pure-menu-heading" href="/">Table of Contents</a>
+
+              <ul class="pure-menu-list">
+                <% number = 1 %>
+                <% @contents.each do |chapter| %>
+                  <li class="pure-menu-item">
+                    <a href="/chapters/<%= number %>" class="pure-menu-link"><%= chapter %></a>
+                  </li>
+                  <% number += 1 %>
+                <% end %>
                 <li class="pure-menu-item">
-                  <a href="#" class="pure-menu-link"><%= chapter %></a>
+                  <a href="/search" class="pure-menu-link">Search</a>
                 </li>
-              <% end %>
-            </ul>
+              </ul>
           </div>
       </div>
 
@@ -38,13 +44,11 @@
         </div>
 
         <div class="content">
-          <h2 class="content-subhead">Chapter 1</h2>
-
-          <%= @chapter %>
+          <%= yield %>
         </div>
       </div>
   </div>
 
-  <script type="text/javascript" src="/javascripts/ui.js"></script>
+  <script type="text/javascript" src="javascripts/ui.js"></script>
 </body>
 </html>
